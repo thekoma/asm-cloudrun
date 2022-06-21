@@ -1,0 +1,11 @@
+.flake8
+.isort.cfg
+.trunk/trunk.yaml
+backend/poetry.lock
+backend/src/__pycache__
+terraform/detaulfs.tfvars
+terraform/terraform.tfvars
+terraform/terraform.tfstate
+terraform/.terraform
+terraform/credentials.json
+terraform/.terraform.lock.hcl
