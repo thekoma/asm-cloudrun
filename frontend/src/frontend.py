@@ -48,10 +48,10 @@ async def post_module(module: str, params: ModuleOptions):
     proto = dict(params)['proto']
     if (os.environ.get('KUBERNETES_SERVICE_HOST') is not None) and (module.find(".") == -1):
         host=module + "." + get_current_namespace() + ".svc.cluster.local"
-        print("Sono in k8s: " + host)
+        print("Sono in k8s e mi han dato uno shortname: " + host)
     else:
         host=module
-        print("Non sono in k8s: " + host)
+        print("Host: " + host)
 
     url = proto + "://" + host + ":" + str(port) + "/api/module/" + function_name
     payload={}

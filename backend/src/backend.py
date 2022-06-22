@@ -9,7 +9,7 @@ from fastapi import FastAPI, status, Response
 from fastapi.responses import PlainTextResponse, ORJSONResponse, HTMLResponse
 
 
-MODULE = os.getenv("MODULE_NAME", "unset")
+MODULE = os.getenv("MODULE", "unset")
 
 app = FastAPI()
 
