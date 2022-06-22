@@ -1,0 +1,13 @@
+timeout: 3600s
+substitutions:
+  _REPO: "asm-demo"
+  _BUILD_TRIGGER: "push-to-main"
+  _IMAGE: frontend
+tags:
+  - main
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}']
+images: ['us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}']
