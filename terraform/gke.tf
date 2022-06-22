@@ -20,7 +20,8 @@ module "enabled_google_apis" {
     "cloudtrace.googleapis.com",
     "logging.googleapis.com",
     "containerregistry.googleapis.com",
-    "cloudbuild.googleapis.com"
+    "cloudbuild.googleapis.com",
+    "artifactregistry.googleapis.com"
   ]
 }
 
