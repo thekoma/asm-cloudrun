@@ -22,7 +22,7 @@ async def home():
 
 class ModuleOptions(BaseModel):
     function_name: Optional[str] = "sub"
-    port: Optional[int] = 5000
+    port: Optional[int] = 80
     proto: Optional[str] = "http"
     value01: float
     value02: float
