@@ -46,7 +46,7 @@ async def post_module(module: str, params: ModuleOptions):
     function_name = dict(params)['function_name']
     port = dict(params)['port']
     proto = dict(params)['proto']
-    if os.environ.get('KUBERNETES_SERVICE_HOST') is not None and not module.find("."):
+    if (os.environ.get('KUBERNETES_SERVICE_HOST') is not None) and (module.find(".") == -1):
         host=module + get_current_namespace() + ".svc.cluster.local"
         print("Sono in k8s: " + host)
     else:
