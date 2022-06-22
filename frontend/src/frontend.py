@@ -41,7 +41,7 @@ async def post_module(module: str, params: ModuleOptions):
     json_post = json.dumps(payload)
     print("URL:" + url)
     print("Payload:" + json_post)
-    r = requests.post(url = url, data = json_post)
+    r = requests.post(url = url, data = json_post, timeout=1)
     print("Reply:")
     print(r.status_code)
     reply = {

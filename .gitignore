@@ -11,3 +11,4 @@ terraform/.terraform.lock.hcl
 asm
 terraform/terraform.tfstate.backup
 terraform/.terraform.tfstate.lock.info
+frontend/src/__pycache__
