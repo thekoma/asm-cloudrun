@@ -39,7 +39,6 @@ async def post_module(function: str, moduleopts: ModuleOptions):
     options['function'] = function
     value01 = options['value01']
     value02 = options['value02']
-    function
     match function:
         case 'mult':
             options['result'] = value01*value02

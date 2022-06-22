@@ -5,6 +5,7 @@ import requests
 from random import randrange as randrange
 from typing import Union
 from pydantic import BaseModel
+from typing import Optional
 from fastapi import FastAPI, status, Response
 from fastapi.responses import PlainTextResponse, ORJSONResponse, HTMLResponse
 
@@ -20,14 +21,33 @@ async def home():
 # "Hello please post a request in the format <url>/api/<module name>" with data '{ "value01": 100, "value02": 10} '!"
 
 class ModuleOptions(BaseModel):
-    function_name: str = "sum"
+    function_name: Optional[str] = "sub"
+    port: Optional[int] = 5000
+    proto: Optional[str] = "http"
     value01: float
     value02: float
 
 
+
 @app.post("/api/{module}")
 async def post_module(module: str, params: ModuleOptions):
-    function_name = dict(params).function_name
-    url = "{module}/api/{module}/{function_name}"
-    r = requests.get(url = url, params = params)
-    return r
+    function_name = dict(params)['function_name']
+    port = dict(params)['port']
+    proto = dict(params)['proto']
+    url = proto + "://" + module + ":" + str(port) + "/api/module/" + function_name
+    payload={}
+    payload['value01']=dict(params)['value01']
+    payload['value02']=dict(params)['value02']
+    json_post = json.dumps(payload)
+    print("URL:" + url)
+    print("Payload:" + json_post)
+    r = requests.post(url = url, data = json_post)
+    print("Reply:")
+    print(r.status_code)
+    reply = {
+        "return_code": r.status_code,
+        "payload": payload,
+        "url": url,
+        "returned_data": r.json()
+        }
+    return reply
