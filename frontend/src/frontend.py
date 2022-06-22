@@ -20,13 +20,14 @@ async def home():
 # "Hello please post a request in the format <url>/api/<module name>" with data '{ "value01": 100, "value02": 10} '!"
 
 class ModuleOptions(BaseModel):
-    function_name: str
+    function_name: str = "sum"
     value01: float
     value02: float
 
 
 @app.post("/api/{module}")
 async def post_module(module: str, params: ModuleOptions):
-    url = "{module}/api/{module}"
+    function_name = dict(params).function_name
+    url = "{module}/api/{module}/{function_name}"
     r = requests.get(url = url, params = params)
     return r
