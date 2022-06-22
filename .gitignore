@@ -9,3 +9,5 @@ terraform/terraform.tfstate
 terraform/.terraform
 terraform/credentials.json
 terraform/.terraform.lock.hcl
+asm
+terraform/terraform.tfstate.backup

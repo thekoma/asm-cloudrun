@@ -24,3 +24,14 @@ resource "google_project_organization_policy" "requireOsLogin" {
   }
 }
 
+
+resource "google_project_organization_policy" "vmCanIpForward" {
+  project     = module.project-factory.project_id
+  constraint = "compute.vmCanIpForward"
+  list_policy {
+    allow {
+      all = true
+    }
+  }
+}
+

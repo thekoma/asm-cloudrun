@@ -33,6 +33,21 @@ variable "region" {
   default = "us-central1"
 }
 
+
+variable "zones" {
+  type    = list(string)
+  default = [
+    "us-central1-a",
+    "us-central1-b",
+    "us-central1-c"
+  ]
+}
+
+variable "primary-zone" {
+  type    = string
+  default = "us-central1-a"
+}
+
 variable "ip_range_pods_name" {
   type     = string
   default = "pods"
@@ -60,3 +75,18 @@ variable "svcs_subnet_ip" {
 }
 
 
+variable "gke_cluster_name" {
+  type     = string
+  default = "cluster"
+}
+
+resource "random_string" "suffix" {
+  length           = 5
+  special          = false
+  lower            = true
+  upper            = false
+}
+
+locals {
+  name_suffix = "${random_string.suffix.result}"
+}

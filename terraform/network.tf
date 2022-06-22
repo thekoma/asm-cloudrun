@@ -1,35 +1,43 @@
 module "gcp-network" {
-  source  = "terraform-google-modules/network/google"
-  version = "~> 5.0.0"
+  source                    = "terraform-google-modules/network/google"
+  version                   = "~> 5.1.0"
 
-  project_id   = module.project-factory.project_id
-  network_name = var.network_name
+  project_id                = module.project-factory.project_id
+  network_name              = var.network_name
+  # private_ip_google_access  = true # TODO
+  subnets                   = [
+                                {
+                                  subnet_name   = var.subnetwork
+                                  subnet_ip     = var.subnet_ip
+                                  subnet_region = var.region
+                                }
+                              ]
 
-  subnets = [
-    {
-      subnet_name   = var.subnetwork
-      subnet_ip     = var.subnet_ip
-      subnet_region = var.region
-    },
-  ]
+  secondary_ranges          = {
+                                (var.subnetwork) = [
+                                  {
+                                    range_name    = var.ip_range_pods_name
+                                    ip_cidr_range = var.pods_subnet_ip
+                                  },
+                                  {
+                                    range_name    = var.ip_range_services_name
+                                    ip_cidr_range = var.svcs_subnet_ip
+                                  },
+                                ]
+                              }
+}
 
-  secondary_ranges = {
-    (var.subnetwork) = [
-      {
-        range_name    = var.ip_range_pods_name
-        ip_cidr_range = var.pods_subnet_ip
-      },
-      {
-        range_name    = var.ip_range_services_name
-        ip_cidr_range = var.svcs_subnet_ip
-      },
-    ]
-  }
+data "google_compute_subnetwork" "sub_nat_net" {
+  depends_on  = [ module.gcp-network ]
+  name        = var.subnetwork
+  project     = module.project-factory.project_id
+  region      = var.region
 }
 
 data "google_compute_network" "nat_net" {
-  name = var.network_name
-  project = module.project-factory.project_id
+  depends_on  = [ module.gcp-network ]
+  name        = var.network_name
+  project     = module.project-factory.project_id
 }
 
 resource "google_compute_router" "nat_router" {
