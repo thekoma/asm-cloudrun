@@ -6,11 +6,11 @@ tags:
   - main
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/frontend','-f', './frontend/Dockerfile' , '.']
+  args: ['build', '-t', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/frontend','-f', './frontend/Dockerfile' , './frontend']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/frontend']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/backend','-f', './backend/Dockerfile' , '.']
+  args: ['build', '-t', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/backend','-f', './backend/Dockerfile' , './backend']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/backend']
 images: ['us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/frontend', 'us-docker.pkg.dev/${PROJECT_ID}/${_REPO}/backend']
