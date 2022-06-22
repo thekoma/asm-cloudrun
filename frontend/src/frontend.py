@@ -29,12 +29,28 @@ class ModuleOptions(BaseModel):
 
 
 
+
+def get_current_namespace():
+    ns_path = "/var/run/secrets/kubernetes.io/serviceaccount/namespace"
+    if os.path.exists(ns_path):
+        with open(ns_path) as f:
+            return f.read().strip()
+    try:
+        _, active_context = kubernetes.config.list_kube_config_contexts()
+        return active_context["context"]["namespace"]
+    except KeyError:
+        return "default"
+
 @app.post("/api/{module}")
 async def post_module(module: str, params: ModuleOptions):
     function_name = dict(params)['function_name']
     port = dict(params)['port']
     proto = dict(params)['proto']
-    url = proto + "://" + module + ":" + str(port) + "/api/module/" + function_name
+    if os.environ.get('KUBERNETES_SERVICE_HOST') is not None and not module.find("."):
+      host=module + get_current_namespace()
+    else:
+      host=module
+    url = proto + "://" + host + ":" + str(port) + "/api/module/" + function_name
     payload={}
     payload['value01']=dict(params)['value01']
     payload['value02']=dict(params)['value02']
