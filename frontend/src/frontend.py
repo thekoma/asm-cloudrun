@@ -67,6 +67,7 @@ async def post_module(module: str, params: ModuleOptions):
         "return_code": r.status_code,
         "payload": payload,
         "url": url,
-        "returned_data": r.json()
+        "returned_data": r.json(),
+        "request_duration": r.elapsed
         }
     return reply

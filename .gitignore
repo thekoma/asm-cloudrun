@@ -12,3 +12,4 @@ asm
 terraform/terraform.tfstate.backup
 terraform/.terraform.tfstate.lock.info
 frontend/src/__pycache__
+utils/services-generator/modules

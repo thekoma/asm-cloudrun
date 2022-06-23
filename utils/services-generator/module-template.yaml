@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     networking.knative.dev/visibility: cluster-local
-  name: module01
+  name: MODULENAME
   namespace: default
 spec:
   template:
@@ -12,27 +12,36 @@ spec:
         autoscaling.knative.dev/minScale: "0"
         run.googleapis.com/client-name: cloud-console
       creationTimestamp: null
-      name: module01-01
+      name: MODULENAME-VERSION
     spec:
-      containerConcurrency: 1
+      containerConcurrency: 10
       containers:
       - env:
-        - name: MODULE_NAME
-          value: module01
+        - name: MODULE
+          value: MODULENAME
         image: us-central1-docker.pkg.dev/potato-05a0/asm-demo/backend:latest
         name: user-container
         ports:
-        - containerPort: 5000
-          protocol: TCP
+          - containerPort: 5000
+            protocol: TCP
         readinessProbe:
+          httpGet:
+            path: /ping
           successThreshold: 1
-          tcpSocket:
-            port: 0
+        livenessProbe:
+          httpGet:
+            path: /ping
+          successThreshold: 1
         resources:
           limits:
-            memory: 256Mi
+            memory: 2Gi
+            cpu: 2
+          request:
+            cpu: 2
+            memory: 2Gi
       enableServiceLinks: false
       timeoutSeconds: 300
   traffic:
   - latestRevision: true
     percent: 100
+---
