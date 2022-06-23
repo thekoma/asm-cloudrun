@@ -89,4 +89,5 @@ resource "random_string" "suffix" {
 
 locals {
   name_suffix = "${random_string.suffix.result}"
+  cloudrun_revision_name = "cloud-run"
 }
